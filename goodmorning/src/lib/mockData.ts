@@ -211,6 +211,125 @@ export const briefingDetail = {
   ],
 }
 
+// 목업 데이터: 주가 차트 (5일, 1개월, 3개월)
+export type ChartDataPoint = {
+  date: string
+  close: number
+  volume: number
+}
+
+export type ChartPeriod = '5d' | '1mo' | '3mo'
+
+// 차트 데이터 생성 헬퍼 함수
+function generateChartData(
+  basePrice: number,
+  days: number,
+  volatility: number,
+  trend: 'up' | 'down' | 'neutral'
+): ChartDataPoint[] {
+  const data: ChartDataPoint[] = []
+  let price = basePrice * (trend === 'up' ? 0.85 : trend === 'down' ? 1.15 : 0.95)
+  const today = new Date()
+  
+  for (let i = days - 1; i >= 0; i--) {
+    const date = new Date(today)
+    date.setDate(date.getDate() - i)
+    
+    // 주말 건너뛰기
+    if (date.getDay() === 0 || date.getDay() === 6) continue
+    
+    const change = (Math.random() - 0.5) * volatility
+    const trendFactor = trend === 'up' ? 0.002 : trend === 'down' ? -0.002 : 0
+    price = price * (1 + change + trendFactor)
+    
+    data.push({
+      date: date.toISOString().split('T')[0],
+      close: Math.round(price * 100) / 100,
+      volume: Math.floor(Math.random() * 50000000) + 10000000,
+    })
+  }
+  
+  return data
+}
+
+// 종목별 차트 데이터
+export const stockChartData: Record<string, Record<ChartPeriod, ChartDataPoint[]>> = {
+  NVDA: {
+    '5d': generateChartData(142.50, 7, 0.03, 'up'),
+    '1mo': generateChartData(142.50, 30, 0.025, 'up'),
+    '3mo': generateChartData(142.50, 90, 0.02, 'up'),
+  },
+  TSLA: {
+    '5d': generateChartData(275.80, 7, 0.04, 'up'),
+    '1mo': generateChartData(275.80, 30, 0.035, 'up'),
+    '3mo': generateChartData(275.80, 90, 0.03, 'neutral'),
+  },
+  AAPL: {
+    '5d': generateChartData(195.20, 7, 0.015, 'down'),
+    '1mo': generateChartData(195.20, 30, 0.012, 'neutral'),
+    '3mo': generateChartData(195.20, 90, 0.01, 'up'),
+  },
+  AMD: {
+    '5d': generateChartData(148.90, 7, 0.035, 'up'),
+    '1mo': generateChartData(148.90, 30, 0.03, 'up'),
+    '3mo': generateChartData(148.90, 90, 0.025, 'up'),
+  },
+  MSFT: {
+    '5d': generateChartData(378.50, 7, 0.012, 'up'),
+    '1mo': generateChartData(378.50, 30, 0.01, 'up'),
+    '3mo': generateChartData(378.50, 90, 0.008, 'up'),
+  },
+}
+
+// 차트 해설 생성 함수 (규칙 기반)
+export function generateChartInsight(chartData: ChartDataPoint[], period: ChartPeriod): string {
+  if (!chartData || chartData.length < 2) {
+    return "데이터가 충분하지 않아요."
+  }
+
+  const startPrice = chartData[0].close
+  const endPrice = chartData[chartData.length - 1].close
+  const changePercent = ((endPrice - startPrice) / startPrice) * 100
+
+  // 최근 반등 여부
+  const recentData = chartData.slice(-3)
+  const isRecovering = recentData.every((d, i) => 
+    i === 0 || recentData[i - 1].close <= d.close
+  )
+
+  const periodLabel = { '5d': '5일', '1mo': '한 달', '3mo': '3개월' }[period]
+
+  if (changePercent >= 15) {
+    const emoji = period === '5d' ? '🔥' : '🚀'
+    return `${periodLabel}간 +${changePercent.toFixed(1)}% 급등! 매우 강한 상승세예요 ${emoji}`
+  }
+  
+  if (changePercent >= 5) {
+    return `${periodLabel}간 +${changePercent.toFixed(1)}% 상승했어요. 긍정적인 흐름이에요 📈`
+  }
+  
+  if (changePercent >= 1) {
+    return `${periodLabel}간 +${changePercent.toFixed(1)}% 소폭 상승. 안정적인 모습이에요 📊`
+  }
+  
+  if (changePercent >= -1) {
+    return `${periodLabel}간 큰 변동 없이 횡보 중이에요. 방향을 지켜보세요 ➡️`
+  }
+  
+  if (changePercent >= -5) {
+    if (isRecovering) {
+      return `${periodLabel}간 ${changePercent.toFixed(1)}% 하락했지만, 최근 반등 중이에요 🔄`
+    }
+    return `${periodLabel}간 ${changePercent.toFixed(1)}% 하락했어요. 조정 구간일 수 있어요 📉`
+  }
+  
+  // -5% 미만 (급락)
+  if (isRecovering) {
+    return `${periodLabel}간 ${changePercent.toFixed(1)}% 하락 후 반등 시도 중이에요 💪`
+  }
+  return `${periodLabel}간 ${changePercent.toFixed(1)}% 급락! 신중한 접근이 필요해요 ⚠️`
+}
+
 // 타입 정의
 export type Stock = typeof trendingStocks[0]
 export type BriefingHistoryItem = typeof briefingHistory[0]

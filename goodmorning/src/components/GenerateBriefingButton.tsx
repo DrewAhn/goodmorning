@@ -1,8 +1,11 @@
 'use client'
 
 import { useState } from 'react'
+import { useTheme } from '@/contexts/ThemeContext'
 
 export default function GenerateBriefingButton() {
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
   const [isLoading, setIsLoading] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
 
@@ -19,6 +22,11 @@ export default function GenerateBriefingButton() {
     setTimeout(() => setShowSuccess(false), 3000)
   }
 
+  const disabledBg = isDark ? 'bg-dark-border' : 'bg-light-border'
+  const disabledText = isDark ? 'text-dark-text-secondary' : 'text-light-text-secondary'
+  const gradientFrom = isDark ? 'from-dark-accent' : 'from-light-accent'
+  const shadowColor = isDark ? 'hover:shadow-dark-accent/25' : 'hover:shadow-light-accent/25'
+
   return (
     <div className="relative">
       <button
@@ -27,8 +35,8 @@ export default function GenerateBriefingButton() {
         className={`
           flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-300
           ${isLoading 
-            ? 'bg-dark-border text-dark-text-secondary cursor-not-allowed' 
-            : 'bg-gradient-to-r from-dark-accent to-blue-600 hover:from-blue-600 hover:to-dark-accent text-white shadow-lg hover:shadow-dark-accent/25'
+            ? `${disabledBg} ${disabledText} cursor-not-allowed` 
+            : `bg-gradient-to-r ${gradientFrom} to-blue-600 hover:from-blue-600 hover:to-blue-500 text-white shadow-lg ${shadowColor}`
           }
         `}
       >

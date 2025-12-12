@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+:root {
+  --stock-up: #00D26A;
+  --stock-down: #FF4757;
+  --stock-neutral: #A0AEC0;
+}
+
+body {
+  font-family: 'Pretendard', system-ui, sans-serif;
+  background-color: #0D1117;
+  color: #C9D1D9;
+}
+
+/* 스크롤바 스타일링 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #161B22;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #30363D;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #484F58;
+}
+
+/* 카드 호버 효과 */
+.card-hover {
+  @apply transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-black/20;
+}
+
+/* 주식 변동 색상 */
+.stock-positive {
+  @apply text-stock-up;
+}
+
+.stock-negative {
+  @apply text-stock-down;
+}
+
+.stock-neutral {
+  @apply text-stock-neutral;
+}
+
+/* 글로우 효과 */
+.glow-green {
+  box-shadow: 0 0 20px rgba(0, 210, 106, 0.3);
+}
+
+.glow-red {
+  box-shadow: 0 0 20px rgba(255, 71, 87, 0.3);
+}
+
+/* 그라디언트 배경 */
+.gradient-bg {
+  background: linear-gradient(135deg, #0D1117 0%, #161B22 50%, #1C2128 100%);
+}
+
+/* 버튼 스타일 */
+.btn-primary {
+  @apply bg-dark-accent hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 font-medium;
+}
+
+.btn-secondary {
+  @apply bg-dark-card hover:bg-dark-border text-dark-text px-4 py-2 rounded-lg border border-dark-border transition-colors duration-200;
+}
+
+

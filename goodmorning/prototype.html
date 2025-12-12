@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>굿모닝 월가 | Good Morning, Wall Street</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'stock-up': '#00D26A',
+            'stock-down': '#FF4757',
+            'stock-neutral': '#A0AEC0',
+            'dark': {
+              'bg': '#0D1117',
+              'card': '#161B22',
+              'border': '#30363D',
+              'text': '#C9D1D9',
+              'text-secondary': '#8B949E',
+              'accent': '#58A6FF',
+            }
+          },
+          fontFamily: {
+            'display': ['Pretendard', 'system-ui', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Pretendard', system-ui, sans-serif;
+      background: linear-gradient(135deg, #0D1117 0%, #161B22 50%, #1C2128 100%);
+      color: #C9D1D9;
+      min-height: 100vh;
+    }
+    .card-hover {
+      transition: all 0.3s;
+    }
+    .card-hover:hover {
+      transform: scale(1.02);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+    }
+    .glow-green {
+      box-shadow: 0 0 20px rgba(0, 210, 106, 0.3);
+    }
+    @keyframes pulse-slow {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .animate-pulse-slow {
+      animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #161B22;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #30363D;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <!-- 헤더 -->
+  <header class="border-b border-dark-border bg-dark-bg/80 backdrop-blur-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="text-2xl">🌅</span>
+        <div>
+          <h1 class="text-xl font-bold text-white">굿모닝 월가</h1>
+          <p class="text-xs text-dark-text-secondary">Good Morning, Wall Street</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <span class="text-sm text-dark-text-secondary">
+          마지막 업데이트: 2025-12-10 09:00 KST
+        </span>
+        <div class="w-2 h-2 bg-stock-up rounded-full animate-pulse-slow"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 메인 콘텐츠 -->
+  <main class="max-w-7xl mx-auto px-4 py-6">
+    <!-- 페이지 타이틀 & 액션 버튼 -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+      <div>
+        <h2 class="text-2xl font-bold text-white">오늘의 화제 종목</h2>
+        <p class="text-dark-text-secondary mt-1">
+          2025년 12월 9일 미국 증시 마감 기준
+        </p>
+      </div>
+      <button class="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold bg-gradient-to-r from-dark-accent to-blue-600 hover:from-blue-600 hover:to-dark-accent text-white shadow-lg transition-all duration-300">
+        <span class="text-xl">✨</span>
+        <span>수동 브리핑 생성</span>
+      </button>
+    </div>
+
+    <!-- 시장 개요 -->
+    <section class="mb-8">
+      <h3 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+        <span>📈</span> 시장 개요
+      </h3>
+      <div class="grid grid-cols-3 gap-4">
+        <div class="bg-dark-card border border-dark-border rounded-xl p-4 text-center hover:border-stock-up/30 transition-colors">
+          <p class="text-dark-text-secondary text-sm mb-1">NASDAQ</p>
+          <p class="text-xl font-bold text-white">16,250.5</p>
+          <p class="text-sm font-semibold text-stock-up">▲ +1.20%</p>
+        </div>
+        <div class="bg-dark-card border border-dark-border rounded-xl p-4 text-center hover:border-stock-up/30 transition-colors">
+          <p class="text-dark-text-secondary text-sm mb-1">S&P 500</p>
+          <p class="text-xl font-bold text-white">4,850.2</p>
+          <p class="text-sm font-semibold text-stock-up">▲ +0.80%</p>
+        </div>
+        <div class="bg-dark-card border border-dark-border rounded-xl p-4 text-center hover:border-stock-up/30 transition-colors">
+          <p class="text-dark-text-secondary text-sm mb-1">DOW</p>
+          <p class="text-xl font-bold text-white">38,500.0</p>
+          <p class="text-sm font-semibold text-stock-up">▲ +0.50%</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOP 1 종목 -->
+    <section class="mb-8">
+      <h3 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+        <span>🏆</span> TOP 1 화제 종목
+      </h3>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- 메인 카드 -->
+        <div class="bg-dark-card border border-dark-border rounded-xl p-5 card-hover ring-2 ring-dark-accent/50">
+          <!-- 헤더 -->
+          <div class="flex items-start justify-between mb-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg bg-stock-up/20 text-stock-up">
+                1
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="font-bold text-white text-lg">NVDA</span>
+                  <span class="px-2 py-0.5 bg-dark-accent/20 text-dark-accent text-xs rounded-full">TOP 1</span>
+                </div>
+                <p class="text-dark-text-secondary text-sm">NVIDIA Corporation</p>
+              </div>
+            </div>
+            <span class="px-2 py-1 text-xs rounded-md border bg-stock-up/20 text-stock-up border-stock-up/30">HIGH</span>
+          </div>
+
+          <!-- 가격 정보 -->
+          <div class="mb-4">
+            <div class="flex items-baseline gap-2">
+              <span class="text-2xl font-bold text-white">$142.50</span>
+              <span class="text-lg font-semibold text-stock-up">+6.15%</span>
+            </div>
+            <p class="text-dark-text-secondary text-sm mt-1">+$8.25 전일 대비</p>
+          </div>
+
+          <!-- 하이라이트 -->
+          <div class="p-3 rounded-lg mb-4 bg-stock-up/10 border border-stock-up/20">
+            <p class="text-sm">🔥 AI 칩 신제품 발표로 급등</p>
+          </div>
+
+          <!-- 지표 -->
+          <div class="grid grid-cols-3 gap-3 mb-4">
+            <div class="text-center p-2 bg-dark-bg rounded-lg">
+              <p class="text-xs text-dark-text-secondary">거래량</p>
+              <p class="text-sm font-semibold text-white">58.4M</p>
+            </div>
+            <div class="text-center p-2 bg-dark-bg rounded-lg">
+              <p class="text-xs text-dark-text-secondary">시가총액</p>
+              <p class="text-sm font-semibold text-white">$3.50T</p>
+            </div>
+            <div class="text-center p-2 bg-dark-bg rounded-lg">
+              <p class="text-xs text-dark-text-secondary">P/E</p>
+              <p class="text-sm font-semibold text-white">65.2</p>
+            </div>
+          </div>
+
+          <!-- 초보자 해설 -->
+          <div class="p-3 bg-dark-bg rounded-lg border border-dark-border">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-xs">💡</span>
+              <span class="text-xs text-dark-text-secondary">초보자 해설</span>
+            </div>
+            <p class="text-sm text-dark-text">엔비디아는 AI에 필요한 고성능 칩을 만드는 회사예요.</p>
+          </div>
+
+          <!-- 선정 이유 -->
+          <div class="mt-3 pt-3 border-t border-dark-border">
+            <p class="text-xs text-dark-text-secondary">
+              📊 선정 기준: <span class="text-dark-accent">거래량 상위 + 상승 종목</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- 요약 정보 -->
+        <div class="bg-dark-card border border-dark-border rounded-xl p-6 flex flex-col justify-between">
+          <div>
+            <h4 class="text-xl font-bold text-white mb-2">왜 NVDA이 선정되었나요?</h4>
+            <div class="space-y-4 mt-4">
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 bg-stock-up/20 rounded-lg flex items-center justify-center text-stock-up">📊</div>
+                <div>
+                  <p class="font-semibold text-white">거래량 1위</p>
+                  <p class="text-sm text-dark-text-secondary">58.4M 주 거래 (평소 대비 30% 증가)</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 bg-stock-up/20 rounded-lg flex items-center justify-center text-stock-up">📈</div>
+                <div>
+                  <p class="font-semibold text-white">상승률 상위</p>
+                  <p class="text-sm text-dark-text-secondary">+6.15% 상승으로 상승 종목 중 상위권</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 bg-dark-accent/20 rounded-lg flex items-center justify-center text-dark-accent">🎯</div>
+                <div>
+                  <p class="font-semibold text-white">선정 신뢰도: HIGH</p>
+                  <p class="text-sm text-dark-text-secondary">거래량과 상승률 모두 상위권 → 높은 신뢰도</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-6 p-4 bg-dark-bg rounded-lg border border-dark-border">
+            <p class="text-sm text-dark-text-secondary">
+              💡 <span class="text-dark-text">선정 알고리즘</span>: 거래량 TOP 25와 상승률 TOP 25의 
+              <span class="text-dark-accent"> 교집합</span> 중 거래량 1위 종목을 자동 선정합니다.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 나머지 화제 종목 -->
+    <section class="mb-8">
+      <h3 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+        <span>🔥</span> 화제 종목 TOP 2-5
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+        <!-- TSLA -->
+        <div class="bg-dark-card border border-dark-border rounded-xl p-4 card-hover">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center font-bold bg-stock-up/20 text-stock-up">2</div>
+              <div>
+                <span class="font-bold text-white">TSLA</span>
+                <p class="text-xs text-dark-text-secondary">Tesla, Inc.</p>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 text-xs rounded-md border bg-stock-up/20 text-stock-up border-stock-up/30">HIGH</span>
+          </div>
+          <div class="flex items-baseline gap-2 mb-2">
+            <span class="text-lg font-bold text-white">$275.80</span>
+            <span class="text-sm font-semibold text-stock-up">+4.71%</span>
+          </div>
+          <div class="p-2 rounded-lg bg-stock-up/10 border border-stock-up/20 text-xs mb-2">
+            📈 4분기 인도량 기대감 상승
+          </div>
+          <p class="text-xs text-dark-text-secondary">거래량: 42.1M</p>
+        </div>
+
+        <!-- AAPL -->
+        <div class="bg-dark-card border border-dark-border rounded-xl p-4 card-hover">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center font-bold bg-stock-down/20 text-stock-down">3</div>
+              <div>
+                <span class="font-bold text-white">AAPL</span>
+                <p class="text-xs text-dark-text-secondary">Apple Inc.</p>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 text-xs rounded-md border bg-yellow-500/20 text-yellow-400 border-yellow-500/30">MEDIUM</span>
+          </div>
+          <div class="flex items-baseline gap-2 mb-2">
+            <span class="text-lg font-bold text-white">$195.20</span>
+            <span class="text-sm font-semibold text-stock-down">-1.17%</span>
+          </div>
+          <div class="p-2 rounded-lg bg-stock-down/10 border border-stock-down/20 text-xs mb-2">
+            📱 아이폰 판매 우려로 소폭 하락
+          </div>
+          <p class="text-xs text-dark-text-secondary">거래량: 38.9M</p>
+        </div>
+
+        <!-- AMD -->
+        <div class="bg-dark-card border border-dark-border rounded-xl p-4 card-hover">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center font-bold bg-stock-up/20 text-stock-up">4</div>
+              <div>
+                <span class="font-bold text-white">AMD</span>
+                <p class="text-xs text-dark-text-secondary">Advanced Micro Devices</p>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 text-xs rounded-md border bg-stock-up/20 text-stock-up border-stock-up/30">HIGH</span>
+          </div>
+          <div class="flex items-baseline gap-2 mb-2">
+            <span class="text-lg font-bold text-white">$148.90</span>
+            <span class="text-sm font-semibold text-stock-up">+3.91%</span>
+          </div>
+          <div class="p-2 rounded-lg bg-stock-up/10 border border-stock-up/20 text-xs mb-2">
+            💻 데이터센터 GPU 수요 증가
+          </div>
+          <p class="text-xs text-dark-text-secondary">거래량: 35.2M</p>
+        </div>
+
+        <!-- MSFT -->
+        <div class="bg-dark-card border border-dark-border rounded-xl p-4 card-hover">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center font-bold bg-stock-up/20 text-stock-up">5</div>
+              <div>
+                <span class="font-bold text-white">MSFT</span>
+                <p class="text-xs text-dark-text-secondary">Microsoft Corporation</p>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 text-xs rounded-md border bg-yellow-500/20 text-yellow-400 border-yellow-500/30">MEDIUM</span>
+          </div>
+          <div class="flex items-baseline gap-2 mb-2">
+            <span class="text-lg font-bold text-white">$378.50</span>
+            <span class="text-sm font-semibold text-stock-up">+1.12%</span>
+          </div>
+          <div class="p-2 rounded-lg bg-stock-up/10 border border-stock-up/20 text-xs mb-2">
+            ☁️ Azure 클라우드 성장 지속
+          </div>
+          <p class="text-xs text-dark-text-secondary">거래량: 22.1M</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 최근 브리핑 히스토리 -->
+    <section>
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold text-white flex items-center gap-2">
+          <span>📚</span> 최근 브리핑 히스토리
+        </h3>
+        <button class="text-sm text-dark-accent hover:underline">전체 보기 →</button>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- 히스토리 1 -->
+        <div class="bg-dark-card border border-dark-border rounded-xl p-4 card-hover cursor-pointer">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <span class="text-lg">📋</span>
+              <span class="text-sm text-dark-text-secondary">12월 9일 (월)</span>
+            </div>
+            <span class="px-2 py-0.5 text-xs rounded-full bg-stock-up/20 text-stock-up">발송완료</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-white font-semibold">NVDA</p>
+              <p class="text-xs text-dark-text-secondary">NVIDIA Corporation</p>
+            </div>
+            <div class="text-right">
+              <p class="font-bold text-stock-up">+6.15%</p>
+              <p class="text-xs text-dark-text-secondary">TOP 1 종목</p>
+            </div>
+          </div>
+          <div class="mt-3 pt-3 border-t border-dark-border flex items-center justify-between text-xs text-dark-text-secondary">
+            <span>📧 150명 발송</span>
+            <span>👁️ 63% 열람</span>
+            <span>💬 Slack 3건</span>
+          </div>
+        </div>
+
+        <!-- 히스토리 2 -->
+        <div class="bg-dark-card border border-dark-border rounded-xl p-4 card-hover cursor-pointer">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <span class="text-lg">📋</span>
+              <span class="text-sm text-dark-text-secondary">12월 8일 (일)</span>
+            </div>
+            <span class="px-2 py-0.5 text-xs rounded-full bg-stock-up/20 text-stock-up">발송완료</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-white font-semibold">TSLA</p>
+              <p class="text-xs text-dark-text-secondary">Tesla, Inc.</p>
+            </div>
+            <div class="text-right">
+              <p class="font-bold text-stock-up">+4.25%</p>
+              <p class="text-xs text-dark-text-secondary">TOP 1 종목</p>
+            </div>
+          </div>
+          <div class="mt-3 pt-3 border-t border-dark-border flex items-center justify-between text-xs text-dark-text-secondary">
+            <span>📧 148명 발송</span>
+            <span>👁️ 62% 열람</span>
+            <span>💬 Slack 3건</span>
+          </div>
+        </div>
+
+        <!-- 히스토리 3 -->
+        <div class="bg-dark-card border border-dark-border rounded-xl p-4 card-hover cursor-pointer">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <span class="text-lg">📋</span>
+              <span class="text-sm text-dark-text-secondary">12월 7일 (토)</span>
+            </div>
+            <span class="px-2 py-0.5 text-xs rounded-full bg-stock-up/20 text-stock-up">발송완료</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-white font-semibold">AMD</p>
+              <p class="text-xs text-dark-text-secondary">Advanced Micro Devices</p>
+            </div>
+            <div class="text-right">
+              <p class="font-bold text-stock-up">+3.82%</p>
+              <p class="text-xs text-dark-text-secondary">TOP 1 종목</p>
+            </div>
+          </div>
+          <div class="mt-3 pt-3 border-t border-dark-border flex items-center justify-between text-xs text-dark-text-secondary">
+            <span>📧 145명 발송</span>
+            <span>👁️ 61% 열람</span>
+            <span>💬 Slack 3건</span>
+          </div>
+        </div>
+
+        <!-- 히스토리 4 -->
+        <div class="bg-dark-card border border-dark-border rounded-xl p-4 card-hover cursor-pointer">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <span class="text-lg">📋</span>
+              <span class="text-sm text-dark-text-secondary">12월 6일 (금)</span>
+            </div>
+            <span class="px-2 py-0.5 text-xs rounded-full bg-stock-up/20 text-stock-up">발송완료</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-white font-semibold">AAPL</p>
+              <p class="text-xs text-dark-text-secondary">Apple Inc.</p>
+            </div>
+            <div class="text-right">
+              <p class="font-bold text-stock-down">-1.50%</p>
+              <p class="text-xs text-dark-text-secondary">TOP 1 종목</p>
+            </div>
+          </div>
+          <div class="mt-3 pt-3 border-t border-dark-border flex items-center justify-between text-xs text-dark-text-secondary">
+            <span>📧 142명 발송</span>
+            <span>👁️ 60% 열람</span>
+            <span>💬 Slack 3건</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 푸터 -->
+  <footer class="border-t border-dark-border mt-12 py-6">
+    <div class="max-w-7xl mx-auto px-4 text-center text-dark-text-secondary text-sm">
+      <p>본 정보는 투자 권유가 아닙니다. 투자 결정은 본인 판단에 따라 신중히 하세요.</p>
+      <p class="mt-2">© 2025 굿모닝 월가. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>
+
+

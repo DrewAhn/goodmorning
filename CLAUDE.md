@@ -1,78 +1,123 @@
-# CLAUDE.md
+# Good morning, Wall Street
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Project Overview
+## 프로젝트 개요
 
-"굿모닝 월가 (Good Morning, Wall Street)" is a daily briefing dashboard for Korean investors in US stocks. It automatically selects trending stocks based on Yahoo Finance data and provides AI-summarized briefings via email or Slack.
+미국주식 데일리 브리핑 서비스 "굿모닝 월가"
 
-## Development Commands
+한국 투자자를 위한 미국 주식 시장 데일리 브리핑 대시보드입니다. Yahoo Finance 데이터를 기반으로 화제 종목을 자동 선정하고, AI가 요약한 브리핑을 제공합니다.
 
-All commands should be run from the `goodmorning/` subdirectory:
+## 기술 스택
+
+- **Frontend**: Next.js 14 (1주차 프로토타입 완성)
+  - TypeScript
+  - TailwindCSS
+  - Recharts (차트)
+  - Lucide React (아이콘)
+
+- **Backend**: FastAPI, Python 3.12+ (예정)
+
+- **데이터 수집**: yahooquery (Screener, 종목 정보)
+
+- **뉴스 검색**: Exa API
+
+- **AI**: Gemini API
+
+## 폴더 구조
+
+```
+/
+├── goodmorning/              # Next.js 프론트엔드
+│   ├── src/
+│   │   ├── app/              # Next.js App Router 페이지
+│   │   │   ├── layout.tsx    # 루트 레이아웃 (Header/Footer)
+│   │   │   ├── page.tsx      # 메인 대시보드
+│   │   │   └── briefing/[id]/ # 브리핑 상세 페이지
+│   │   ├── components/       # React 컴포넌트
+│   │   ├── contexts/         # React Context (ThemeContext)
+│   │   └── lib/
+│   │       └── mockData.ts   # Mock 데이터
+│   └── package.json
+│
+├── backend/                  # FastAPI 서버 (예정)
+│   └── services/             # 비즈니스 로직 (예정)
+│
+├── 개발일지/                  # 개발 기록
+├── 스크린샷/                  # 프로젝트 스크린샷
+└── 기획서_굿모닝_월가.md      # 프로젝트 기획서
+```
+
+## 개발 명령어
+
+### Frontend (goodmorning/)
 
 ```bash
 cd goodmorning
 
-# Install dependencies
+# 의존성 설치
 npm install
 
-# Run development server (http://localhost:3000)
+# 개발 서버 실행 (http://localhost:3000)
 npm run dev
 
-# Production build
+# 프로덕션 빌드
 npm run build
 
-# Start production server
+# 프로덕션 서버 실행
 npm start
 
-# Run linting
+# 린팅
 npm run lint
 ```
 
-## Architecture
+### Backend (예정)
 
-### Tech Stack
-- **Framework**: Next.js 14 with App Router
-- **Language**: TypeScript
-- **Styling**: TailwindCSS
-- **Charts**: Recharts
-- **Icons**: Lucide React
+```bash
+cd backend
 
-### Project Structure
+# 가상환경 생성 및 활성화
+python -m venv venv
+venv\Scripts\activate  # Windows
 
-```
-goodmorning/
-├── src/
-│   ├── app/                    # Next.js App Router pages
-│   │   ├── layout.tsx          # Root layout with Header/Footer
-│   │   ├── page.tsx            # Main dashboard
-│   │   └── briefing/[id]/      # Briefing detail page
-│   ├── components/             # React components
-│   ├── contexts/               # React contexts (ThemeContext)
-│   └── lib/
-│       └── mockData.ts         # Mock data (no real API yet)
+# 의존성 설치
+pip install -r requirements.txt
+
+# 서버 실행
+uvicorn main:app --reload
 ```
 
-### Key Components
-- **StockCard**: Displays individual stock information with charts
-- **MarketOverview**: Shows NASDAQ, S&P 500, DOW indices
-- **StockChart**: Interactive price charts using Recharts
-- **ThemeToggle**: Dark/light mode switcher
+## 컨벤션
 
-### Data Flow
-Currently uses mock data in `src/lib/mockData.ts`. Future implementation will connect to:
-- Yahoo Finance API for stock data
-- SendGrid for email delivery
-- Slack webhooks for notifications
+### Frontend (TypeScript/React)
+- **함수명**: camelCase (예: `formatNumber`, `generateChartData`)
+- **컴포넌트/타입**: PascalCase (예: `StockCard`, `ChartDataPoint`)
+- **변수명**: camelCase
 
-### Design System
-- **Colors**: Green (#00D26A) for gains, Red (#FF4757) for losses
-- **Theme**: Dark mode default (#0D1117 background), light mode supported
+### Backend (Python/FastAPI) - 예정
+- **함수명**: snake_case (예: `get_trending_stocks`)
+- **클래스명**: PascalCase (예: `StockService`)
+- **변수명**: snake_case
+
+### 공통
+- **주석**: 한글로 작성
+
+## 주요 컴포넌트
+
+- **StockCard**: 개별 종목 정보 및 차트 표시
+- **MarketOverview**: NASDAQ, S&P 500, DOW 지수 표시
+- **StockChart**: Recharts 기반 인터랙티브 차트
+- **ThemeToggle**: 다크/라이트 모드 전환
+
+## 디자인 시스템
+
+- **Colors**: 상승 Green (#00D26A), 하락 Red (#FF4757)
+- **Theme**: 다크 모드 기본 (#0D1117 배경), 라이트 모드 지원
 - **Responsive**: Mobile < 768px, Tablet 768-1024px, Desktop > 1024px
 
-## Development Rules
+## 개발 규칙
 
-### 개발일지 작성 (Required)
+### 개발일지 작성 (필수)
 
 모든 개발 단계별로 개발일지를 `개발일지/` 폴더에 마크다운 파일로 작성해야 합니다.
 

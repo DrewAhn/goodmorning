@@ -1,6 +1,8 @@
-# Good morning, Wall Street
+# CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## 프로젝트명: Good morning, Wall Street (굿모닝 월가)
 
 ## 프로젝트 개요
 
@@ -102,18 +104,33 @@ uvicorn main:app --reload
 ### 공통
 - **주석**: 한글로 작성
 
-## 주요 컴포넌트
+## 주요 컴포넌트 및 아키텍처
 
+### 컴포넌트 (goodmorning/src/components/)
 - **StockCard**: 개별 종목 정보 및 차트 표시
 - **MarketOverview**: NASDAQ, S&P 500, DOW 지수 표시
 - **StockChart**: Recharts 기반 인터랙티브 차트
 - **ThemeToggle**: 다크/라이트 모드 전환
+- **BriefingHistoryCard**: 브리핑 히스토리 카드
+- **GenerateBriefingButton**: 브리핑 생성 버튼
+- **Header/Footer**: 레이아웃 컴포넌트 (app/layout.tsx에서 사용)
+- **Providers**: ThemeContext를 제공하는 클라이언트 컴포넌트
+
+### 상태 관리 및 테마
+- **ThemeContext (contexts/ThemeContext.tsx)**: React Context API를 사용한 다크/라이트 모드 상태 관리
+- **Providers 컴포넌트**: 'use client' 지시어를 사용하여 서버/클라이언트 경계 분리
+- 테마 상태는 localStorage에 저장되어 새로고침 시에도 유지됨
+
+### 데이터 구조
+- **mockData.ts**: 현재 API 연동 전까지 사용하는 Mock 데이터
+- 주요 타입: Stock, MarketIndex, Briefing 등
 
 ## 디자인 시스템
 
 - **Colors**: 상승 Green (#00D26A), 하락 Red (#FF4757)
-- **Theme**: 다크 모드 기본 (#0D1117 배경), 라이트 모드 지원
+- **Theme**: 다크 모드 기본 (#0D1117 배경), 라이트 모드 지원 (#FFFFFF 배경)
 - **Responsive**: Mobile < 768px, Tablet 768-1024px, Desktop > 1024px
+- **카드 스타일**: border-border (다크: #30363D), rounded-lg
 
 ## 개발 규칙
 

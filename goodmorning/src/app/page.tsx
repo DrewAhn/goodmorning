@@ -1,17 +1,57 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import StockCard from '@/components/StockCard'
 import MarketOverview from '@/components/MarketOverview'
 import BriefingHistoryCard from '@/components/BriefingHistoryCard'
 import GenerateBriefingButton from '@/components/GenerateBriefingButton'
-import { trendingStocks, marketOverview, briefingHistory } from '@/lib/mockData'
+import LoadingSpinner from '@/components/LoadingSpinner'
+import ErrorMessage from '@/components/ErrorMessage'
+import { marketOverview, briefingHistory } from '@/lib/mockData'
+import { getTrendingStocks, convertApiToMockFormat } from '@/lib/api'
 import { useTheme } from '@/contexts/ThemeContext'
+import { RefreshCw } from 'lucide-react'
+import type { Stock } from '@/lib/mockData'
 
 export default function Dashboard() {
   const { theme } = useTheme()
   const isDark = theme === 'dark'
-  const topStock = trendingStocks[0]
-  const otherStocks = trendingStocks.slice(1)
+
+  // 상태 관리
+  const [stocks, setStocks] = useState<Stock[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [isRefreshing, setIsRefreshing] = useState(false)
+
+  const topStock = stocks[0]
+  const otherStocks = stocks.slice(1)
+
+  // 화제 종목 데이터 로드
+  const fetchStocks = async () => {
+    try {
+      setError(null)
+      const apiStocks = await getTrendingStocks()
+      const convertedStocks = apiStocks.map(convertApiToMockFormat)
+      setStocks(convertedStocks)
+    } catch (err) {
+      console.error('화제 종목 로드 실패:', err)
+      setError(err instanceof Error ? err.message : '데이터를 불러오는데 실패했습니다.')
+    } finally {
+      setIsLoading(false)
+      setIsRefreshing(false)
+    }
+  }
+
+  // 초기 로드
+  useEffect(() => {
+    fetchStocks()
+  }, [])
+
+  // 새로고침 핸들러
+  const handleRefresh = async () => {
+    setIsRefreshing(true)
+    await fetchStocks()
+  }
 
   // 테마별 색상 클래스
   const textPrimary = isDark ? 'text-white' : 'text-light-text'
@@ -22,6 +62,42 @@ export default function Dashboard() {
   const bgSecondary = isDark ? 'bg-dark-bg' : 'bg-light-bg'
   const accentColor = isDark ? 'text-dark-accent' : 'text-light-accent'
   const accentBg = isDark ? 'bg-dark-accent/20 text-dark-accent' : 'bg-light-accent/20 text-light-accent'
+  const buttonAccent = isDark ? 'bg-dark-accent hover:bg-dark-accent/80' : 'bg-light-accent hover:bg-light-accent/80'
+
+  // 로딩 상태
+  if (isLoading) {
+    return (
+      <div className="space-y-8 animate-fade-in">
+        <LoadingSpinner message="화제 종목을 불러오는 중입니다..." />
+      </div>
+    )
+  }
+
+  // 에러 상태
+  if (error) {
+    return (
+      <div className="space-y-8 animate-fade-in">
+        <ErrorMessage
+          title="화제 종목을 불러올 수 없습니다"
+          message={error}
+          onRetry={handleRefresh}
+        />
+      </div>
+    )
+  }
+
+  // 데이터가 없는 경우
+  if (!stocks || stocks.length === 0) {
+    return (
+      <div className="space-y-8 animate-fade-in">
+        <ErrorMessage
+          title="화제 종목이 없습니다"
+          message="현재 표시할 화제 종목이 없습니다. 잠시 후 다시 시도해주세요."
+          onRetry={handleRefresh}
+        />
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-8 animate-fade-in">
@@ -30,10 +106,24 @@ export default function Dashboard() {
         <div>
           <h2 className={`text-2xl font-bold ${textPrimary}`}>오늘의 화제 종목</h2>
           <p className={`${textSecondary} mt-1`}>
-            2025년 12월 9일 미국 증시 마감 기준
+            {new Date().toLocaleDateString('ko-KR', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            })} 미국 증시 기준
           </p>
         </div>
-        <GenerateBriefingButton />
+        <div className="flex gap-2">
+          <button
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+            className={`${buttonAccent} text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed`}
+          >
+            <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+            {isRefreshing ? '새로고침 중...' : '새로고침'}
+          </button>
+          <GenerateBriefingButton />
+        </div>
       </div>
 
       {/* 시장 개요 */}

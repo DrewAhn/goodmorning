@@ -34,13 +34,16 @@ const config: Config = {
         }
       },
       fontFamily: {
-        'display': ['Pretendard', 'system-ui', 'sans-serif'],
-        'mono': ['JetBrains Mono', 'monospace'],
+        'display': ['Archivo Black', 'Oswald', 'Pretendard', 'sans-serif'],
+        'terminal': ['IBM Plex Mono', 'monospace'],
+        'mono': ['IBM Plex Mono', 'monospace'],
       },
       animation: {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'fade-in': 'fadeIn 0.5s ease-out',
         'slide-up': 'slideUp 0.3s ease-out',
+        'ticker': 'ticker 30s linear infinite',
+        'glow': 'glow 2s ease-in-out infinite alternate',
       },
       keyframes: {
         fadeIn: {
@@ -50,6 +53,14 @@ const config: Config = {
         slideUp: {
           '0%': { transform: 'translateY(10px)', opacity: '0' },
           '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        ticker: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+        glow: {
+          '0%': { boxShadow: '0 0 5px currentColor, 0 0 10px currentColor' },
+          '100%': { boxShadow: '0 0 10px currentColor, 0 0 20px currentColor' },
         },
       },
     },

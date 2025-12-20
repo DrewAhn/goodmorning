@@ -3,11 +3,14 @@
 @tailwind utilities;
 
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;600;700&family=Oswald:wght@600;700&display=swap');
 
 :root {
   --stock-up: #00D26A;
   --stock-down: #FF4757;
   --stock-neutral: #A0AEC0;
+  --accent-gold: #FFA500;
+  --accent-cyan: #00D9FF;
 }
 
 /* 테마 전환 애니메이션 */
@@ -21,61 +24,85 @@ html * {
 
 body {
   font-family: 'Pretendard', system-ui, sans-serif;
+  position: relative;
 }
 
 /* 다크 모드 (기본) */
 html.dark body {
-  background-color: #0D1117;
-  color: #C9D1D9;
+  background-color: #000000;
+  color: #E5E5E5;
+  background-image:
+    linear-gradient(rgba(0, 210, 106, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 210, 106, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  background-position: 0 0, 0 0;
 }
 
 /* 라이트 모드 */
 html.light body {
   background-color: #FFFFFF;
-  color: #1F2328;
+  color: #000000;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  background-position: 0 0, 0 0;
 }
 
 /* 스크롤바 스타일링 - 다크 모드 */
 html.dark ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 html.dark ::-webkit-scrollbar-track {
-  background: #161B22;
+  background: #000000;
+  border-left: 1px solid #00D26A;
 }
 
 html.dark ::-webkit-scrollbar-thumb {
-  background: #30363D;
-  border-radius: 4px;
+  background: #00D26A;
+  border-radius: 0;
 }
 
 html.dark ::-webkit-scrollbar-thumb:hover {
-  background: #484F58;
+  background: #00FF7F;
 }
 
 /* 스크롤바 스타일링 - 라이트 모드 */
 html.light ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 html.light ::-webkit-scrollbar-track {
-  background: #F6F8FA;
+  background: #FFFFFF;
+  border-left: 1px solid #000000;
 }
 
 html.light ::-webkit-scrollbar-thumb {
-  background: #D0D7DE;
-  border-radius: 4px;
+  background: #000000;
+  border-radius: 0;
 }
 
 html.light ::-webkit-scrollbar-thumb:hover {
-  background: #AFB8C1;
+  background: #333333;
 }
 
-/* 카드 호버 효과 */
+/* 카드 호버 효과 - Neo-Brutalist */
 .card-hover {
-  @apply transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-black/20;
+  @apply transition-all duration-200;
+  position: relative;
+}
+
+html.dark .card-hover:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 #00D26A;
+}
+
+html.light .card-hover:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 #000000;
 }
 
 /* 주식 변동 색상 */
@@ -91,32 +118,165 @@ html.light ::-webkit-scrollbar-thumb:hover {
   @apply text-stock-neutral;
 }
 
-/* 글로우 효과 */
+/* 글로우 효과 - Neon */
 .glow-green {
-  box-shadow: 0 0 20px rgba(0, 210, 106, 0.3);
+  box-shadow: 0 0 20px rgba(0, 210, 106, 0.6), 0 0 40px rgba(0, 210, 106, 0.3);
+  text-shadow: 0 0 10px rgba(0, 210, 106, 0.8);
 }
 
 .glow-red {
-  box-shadow: 0 0 20px rgba(255, 71, 87, 0.3);
+  box-shadow: 0 0 20px rgba(255, 71, 87, 0.6), 0 0 40px rgba(255, 71, 87, 0.3);
+  text-shadow: 0 0 10px rgba(255, 71, 87, 0.8);
 }
 
-/* 그라디언트 배경 - 다크 모드 */
-html.dark .gradient-bg {
-  background: linear-gradient(135deg, #0D1117 0%, #161B22 50%, #1C2128 100%);
+.glow-gold {
+  box-shadow: 0 0 20px rgba(255, 165, 0, 0.6), 0 0 40px rgba(255, 165, 0, 0.3);
+  text-shadow: 0 0 10px rgba(255, 165, 0, 0.8);
 }
 
-/* 그라디언트 배경 - 라이트 모드 */
-html.light .gradient-bg {
-  background: linear-gradient(135deg, #FFFFFF 0%, #F6F8FA 50%, #EFF1F3 100%);
-}
-
-/* 버튼 스타일 */
+/* 버튼 스타일 - Brutalist */
 .btn-primary {
-  @apply bg-dark-accent hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 font-medium;
+  @apply px-6 py-3 font-bold uppercase tracking-wider transition-all duration-200;
+  font-family: 'Oswald', sans-serif;
+  border: 2px solid #00D26A;
+  background: #00D26A;
+  color: #000000;
+  position: relative;
+}
+
+.btn-primary:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 rgba(0, 210, 106, 0.5);
 }
 
 .btn-secondary {
-  @apply bg-dark-card hover:bg-dark-border text-dark-text px-4 py-2 rounded-lg border border-dark-border transition-colors duration-200;
+  @apply px-6 py-3 font-bold uppercase tracking-wider transition-all duration-200;
+  font-family: 'Oswald', sans-serif;
+  border: 2px solid currentColor;
+  background: transparent;
+  position: relative;
 }
+
+.btn-secondary:hover {
+  transform: translate(-2px, -2px);
+}
+
+/* Ticker Animation */
+@keyframes ticker {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.ticker-animation {
+  animation: ticker 30s linear infinite;
+}
+
+.ticker-animation:hover {
+  animation-play-state: paused;
+}
+
+/* Scanline Effect */
+.scanline {
+  position: relative;
+}
+
+.scanline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 50%,
+    rgba(0, 210, 106, 0.02) 50%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Number counter animation */
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-count-up {
+  animation: countUp 0.6s ease-out;
+}
+
+/* Diagonal accent bar */
+.diagonal-accent {
+  position: relative;
+}
+
+.diagonal-accent::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(135deg, #00D26A, #FFA500);
+  transform: skewX(-10deg);
+}
+
+/* Brutalist border */
+.brutalist-border {
+  border: 3px solid currentColor;
+  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.1);
+}
+
+html.dark .brutalist-border {
+  box-shadow: 8px 8px 0 rgba(0, 210, 106, 0.2);
+}
+
+/* Terminal font */
+.font-terminal {
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: -0.5px;
+}
+
+/* Display font */
+.font-display {
+  font-family: 'Archivo Black', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Stagger animation */
+@keyframes staggerFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stagger-item {
+  animation: staggerFadeIn 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+.stagger-item:nth-child(1) { animation-delay: 0.1s; }
+.stagger-item:nth-child(2) { animation-delay: 0.2s; }
+.stagger-item:nth-child(3) { animation-delay: 0.3s; }
+.stagger-item:nth-child(4) { animation-delay: 0.4s; }
+.stagger-item:nth-child(5) { animation-delay: 0.5s; }
 
 

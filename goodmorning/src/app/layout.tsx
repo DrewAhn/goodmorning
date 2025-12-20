@@ -16,16 +16,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko" className="dark">
-      <body className="min-h-screen gradient-bg">
+      <body className="min-h-screen">
         <Providers>
-          <div className="min-h-screen">
+          <div className="min-h-screen flex flex-col">
             <Header />
-            
+
             {/* 메인 콘텐츠 */}
-            <main className="max-w-7xl mx-auto px-4 py-6">
+            <main className="flex-1 max-w-7xl mx-auto px-4 py-8 w-full">
               {children}
             </main>
-            
+
             <Footer />
           </div>
         </Providers>

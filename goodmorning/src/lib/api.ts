@@ -53,7 +53,7 @@ export class ApiError extends Error {
 // 화제 종목 목록 가져오기
 export async function getTrendingStocks(count: number = 5): Promise<TrendingStock[]> {
   try {
-    const response = await fetch(`${API_BASE_URL}/stocks/trending`, {
+    const response = await fetch(`${API_BASE_URL}/api/stocks/trending/list?count=${count}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -72,29 +72,28 @@ export async function getTrendingStocks(count: number = 5): Promise<TrendingStoc
 
     const data = await response.json()
 
-    // API 응답에서 trending 배열을 가져와서 count만큼 자르기
-    const trendingList = data.trending || data.most_actives || []
-    const limitedList = trendingList.slice(0, count)
+    // 백엔드는 배열을 직접 반환함
+    const trendingList = Array.isArray(data) ? data : []
 
     // API 응답 형식을 TrendingStock 형식으로 변환
-    return limitedList.map((stock: any, index: number) => ({
-      rank: index + 1,
-      ticker: stock.symbol,
+    return trendingList.map((stock: any) => ({
+      rank: stock.rank,
+      ticker: stock.ticker,
       name: stock.name,
-      current_price: stock.price,
-      change_amount: stock.change,
+      current_price: stock.current_price,
+      change_amount: stock.change_amount,
       change_percent: stock.change_percent,
       volume: stock.volume,
       market_cap: stock.market_cap || 0,
       pe_ratio: stock.pe_ratio || null,
-      selection_reason: index === 0 ? '거래량 상위 + 주목도 최고' : '거래량 상위',
-      confidence: index === 0 ? 'HIGH' : index <= 2 ? 'MEDIUM' : 'LOW',
-      highlight: stock.change_percent > 0
+      selection_reason: stock.selection_reason || '거래량 상위',
+      confidence: stock.confidence || 'MEDIUM',
+      highlight: stock.highlight || (stock.change_percent > 0
         ? `🔥 ${stock.change_percent.toFixed(1)}% 상승으로 주목`
         : stock.change_percent < 0
         ? `⚠️ ${Math.abs(stock.change_percent).toFixed(1)}% 하락으로 주목`
-        : '📊 높은 거래량으로 주목',
-      beginner_note: `${stock.name}은(는) 현재 시장에서 높은 관심을 받고 있는 종목입니다.`,
+        : '📊 높은 거래량으로 주목'),
+      beginner_note: stock.beginner_note || `${stock.name}은(는) 현재 시장에서 높은 관심을 받고 있는 종목입니다.`,
     }))
   } catch (error) {
     if (error instanceof ApiError) {

@@ -100,110 +100,127 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div className="space-y-10">
       {/* 페이지 타이틀 & 액션 버튼 */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className={`
+        flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6
+        border-b-4 ${isDark ? 'border-stock-up' : 'border-black'}
+      `}>
         <div>
-          <h2 className={`text-2xl font-bold ${textPrimary}`}>오늘의 화제 종목</h2>
-          <p className={`${textSecondary} mt-1`}>
+          <h2 className={`
+            text-4xl font-display mb-2
+            ${isDark ? 'text-stock-up' : 'text-black'}
+          `}>
+            TODAY'S TRENDING
+          </h2>
+          <p className={`
+            text-sm font-terminal
+            ${isDark ? 'text-white/60' : 'text-black/60'}
+          `}>
             {new Date().toLocaleDateString('ko-KR', {
               year: 'numeric',
               month: 'long',
               day: 'numeric'
-            })} 미국 증시 기준
+            })} • 미국 증시 기준
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           <button
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className={`${buttonAccent} text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed`}
+            className={`
+              px-5 py-3 font-terminal font-bold uppercase tracking-wider
+              border-2 transition-all duration-200
+              ${isDark
+                ? 'bg-black border-stock-up text-stock-up hover:bg-stock-up hover:text-black'
+                : 'bg-white border-black text-black hover:bg-black hover:text-white'
+              }
+              disabled:opacity-50 disabled:cursor-not-allowed
+              flex items-center gap-2
+            `}
           >
             <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-            {isRefreshing ? '새로고침 중...' : '새로고침'}
+            {isRefreshing ? 'LOADING...' : 'REFRESH'}
           </button>
           <GenerateBriefingButton />
         </div>
       </div>
 
       {/* 시장 개요 */}
-      <section>
-        <h3 className={`text-lg font-semibold ${textPrimary} mb-4 flex items-center gap-2`}>
-          <span>📈</span> 시장 개요
-        </h3>
+      <section className="stagger-item">
+        <div className="flex items-center gap-3 mb-6">
+          <div className={`
+            w-1 h-12
+            ${isDark ? 'bg-stock-up' : 'bg-black'}
+          `}></div>
+          <div>
+            <h3 className={`
+              text-2xl font-display
+              ${isDark ? 'text-white' : 'text-black'}
+            `}>
+              MARKET OVERVIEW
+            </h3>
+            <p className={`
+              text-xs font-terminal
+              ${isDark ? 'text-white/60' : 'text-black/60'}
+            `}>
+              미국 3대 지수 실시간 현황
+            </p>
+          </div>
+        </div>
         <MarketOverview data={marketOverview} />
       </section>
 
       {/* TOP 1 종목 (큰 카드) */}
-      <section>
-        <h3 className={`text-lg font-semibold ${textPrimary} mb-4 flex items-center gap-2`}>
-          <span>🏆</span> TOP 1 화제 종목
-        </h3>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* 메인 카드 */}
-          <div className="lg:col-span-1">
-            <StockCard stock={topStock} isTop={true} />
+      <section className="stagger-item">
+        <div className="flex items-center gap-3 mb-6">
+          <div className={`
+            w-1 h-12
+            ${isDark ? 'bg-stock-up' : 'bg-black'}
+          `}></div>
+          <div>
+            <h3 className={`
+              text-2xl font-display
+              ${isDark ? 'text-white' : 'text-black'}
+            `}>
+              TOP PICK
+            </h3>
+            <p className={`
+              text-xs font-terminal
+              ${isDark ? 'text-white/60' : 'text-black/60'}
+            `}>
+              오늘의 최고 화제 종목
+            </p>
           </div>
-          
-          {/* 요약 정보 */}
-          <div className={`${cardBg} border ${borderColor} rounded-xl p-6 flex flex-col justify-between transition-colors duration-300`}>
-            <div>
-              <h4 className={`text-xl font-bold ${textPrimary} mb-2`}>
-                왜 {topStock.symbol}이 선정되었나요?
-              </h4>
-              <div className="space-y-4 mt-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-stock-up/20 rounded-lg flex items-center justify-center text-stock-up">
-                    📊
-                  </div>
-                  <div>
-                    <p className={`font-semibold ${textPrimary}`}>거래량 1위</p>
-                    <p className={`text-sm ${textSecondary}`}>
-                      {(topStock.volume / 1000000).toFixed(1)}M 주 거래 (평소 대비 30% 증가)
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-stock-up/20 rounded-lg flex items-center justify-center text-stock-up">
-                    📈
-                  </div>
-                  <div>
-                    <p className={`font-semibold ${textPrimary}`}>상승률 상위</p>
-                    <p className={`text-sm ${textSecondary}`}>
-                      +{topStock.changePercent.toFixed(2)}% 상승으로 상승 종목 중 상위권
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className={`w-8 h-8 ${accentBg} rounded-lg flex items-center justify-center`}>
-                    🎯
-                  </div>
-                  <div>
-                    <p className={`font-semibold ${textPrimary}`}>선정 신뢰도: {topStock.confidence}</p>
-                    <p className={`text-sm ${textSecondary}`}>
-                      거래량과 상승률 모두 상위권 → 높은 신뢰도
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div className={`mt-6 p-4 ${bgSecondary} rounded-lg border ${borderColor}`}>
-              <p className={`text-sm ${textSecondary}`}>
-                💡 <span className={textNormal}>선정 알고리즘</span>: 거래량 TOP 25와 상승률 TOP 25의 
-                <span className={accentColor}> 교집합</span> 중 거래량 1위 종목을 자동 선정합니다.
-              </p>
-            </div>
-          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <StockCard stock={topStock} isTop={true} />
         </div>
       </section>
 
       {/* 나머지 화제 종목 */}
-      <section>
-        <h3 className={`text-lg font-semibold ${textPrimary} mb-4 flex items-center gap-2`}>
-          <span>🔥</span> 화제 종목 TOP 2-5
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+      <section className="stagger-item">
+        <div className="flex items-center gap-3 mb-6">
+          <div className={`
+            w-1 h-12
+            ${isDark ? 'bg-stock-up' : 'bg-black'}
+          `}></div>
+          <div>
+            <h3 className={`
+              text-2xl font-display
+              ${isDark ? 'text-white' : 'text-black'}
+            `}>
+              TOP 2-5
+            </h3>
+            <p className={`
+              text-xs font-terminal
+              ${isDark ? 'text-white/60' : 'text-black/60'}
+            `}>
+              화제성 높은 종목들
+            </p>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {otherStocks.map((stock) => (
             <StockCard key={stock.symbol} stock={stock} />
           ))}
@@ -211,13 +228,33 @@ export default function Dashboard() {
       </section>
 
       {/* 최근 브리핑 히스토리 */}
-      <section>
-        <div className="flex items-center justify-between mb-4">
-          <h3 className={`text-lg font-semibold ${textPrimary} flex items-center gap-2`}>
-            <span>📚</span> 최근 브리핑 히스토리
-          </h3>
-          <button className={`text-sm ${accentColor} hover:underline`}>
-            전체 보기 →
+      <section className="stagger-item">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <div className={`
+              w-1 h-12
+              ${isDark ? 'bg-stock-up' : 'bg-black'}
+            `}></div>
+            <div>
+              <h3 className={`
+                text-2xl font-display
+                ${isDark ? 'text-white' : 'text-black'}
+              `}>
+                BRIEFING HISTORY
+              </h3>
+              <p className={`
+                text-xs font-terminal
+                ${isDark ? 'text-white/60' : 'text-black/60'}
+              `}>
+                최근 브리핑 기록
+              </p>
+            </div>
+          </div>
+          <button className={`
+            font-terminal text-sm font-bold uppercase
+            ${isDark ? 'text-stock-up hover:underline' : 'text-black hover:underline'}
+          `}>
+            VIEW ALL →
           </button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">

@@ -38,14 +38,14 @@ export default function StockChart({ symbol, isPositive }: StockChartProps) {
     setIsMounted(true)
   }, [])
   
-  // 테마별 색상
-  const bgSecondary = isDark ? 'bg-dark-bg' : 'bg-light-bg'
-  const borderColor = isDark ? 'border-dark-border' : 'border-light-border'
-  const textSecondary = isDark ? 'text-dark-text-secondary' : 'text-light-text-secondary'
-  const textNormal = isDark ? 'text-dark-text' : 'text-light-text'
-  const gridColor = isDark ? '#374151' : '#e5e7eb'
-  const tickColor = isDark ? '#9ca3af' : '#6b7280'
-  const tooltipBg = isDark ? 'bg-dark-card' : 'bg-light-card'
+  // 테마별 색상 - Terminal aesthetic
+  const bgSecondary = isDark ? 'bg-black' : 'bg-white'
+  const borderColor = isDark ? 'border-stock-up' : 'border-black'
+  const textSecondary = isDark ? 'text-white/60' : 'text-black/60'
+  const textNormal = isDark ? 'text-white' : 'text-black'
+  const gridColor = isDark ? '#00D26A' : '#000000'
+  const tickColor = isDark ? '#00D26A' : '#000000'
+  const tooltipBg = isDark ? 'bg-black' : 'bg-white'
   
   // 캐싱: 한 번 로드된 데이터는 유지됨 (컴포넌트 내 상태로 관리)
   const [loadedPeriods, setLoadedPeriods] = useState<Set<ChartPeriod>>(new Set(['5d']))
@@ -61,9 +61,9 @@ export default function StockChart({ symbol, isPositive }: StockChartProps) {
     return stockChartData[symbol]?.[selectedPeriod] || []
   }, [symbol, selectedPeriod])
   
-  // 차트 색상 (상승: 녹색, 하락: 빨간색)
-  const chartColor = isPositive ? '#22c55e' : '#ef4444'
-  const chartColorLight = isPositive ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)'
+  // 차트 색상 (상승: 녹색, 하락: 빨간색) - Using brand colors
+  const chartColor = isPositive ? '#00D26A' : '#FF4757'
+  const chartColorLight = isPositive ? 'rgba(0, 210, 106, 0.1)' : 'rgba(255, 71, 87, 0.1)'
   
   // 차트 해설 생성
   const insight = useMemo(() => {
@@ -102,16 +102,19 @@ export default function StockChart({ symbol, isPositive }: StockChartProps) {
     return value.toString()
   }
   
-  // 툴팁 커스텀
+  // 툴팁 커스텀 - Terminal style
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload
       return (
-        <div className={`${tooltipBg} border ${borderColor} rounded-lg p-3 shadow-lg`}>
-          <p className={`${textSecondary} text-xs mb-1`}>{label}</p>
-          <p className={`${isDark ? 'text-white' : 'text-light-text'} font-semibold`}>${data.close.toFixed(2)}</p>
+        <div className={`
+          ${tooltipBg} border-2 ${borderColor} p-3 font-terminal
+          ${isDark ? 'shadow-[4px_4px_0_#00D26A]' : 'shadow-[4px_4px_0_#000000]'}
+        `}>
+          <p className={`${textSecondary} text-xs mb-1 uppercase`}>{label}</p>
+          <p className={`${textNormal} font-bold text-lg`}>${data.close.toFixed(2)}</p>
           <p className={`${textSecondary} text-xs mt-1`}>
-            거래량: {formatVolume(data.volume)}
+            VOL: {formatVolume(data.volume)}
           </p>
         </div>
       )
@@ -150,36 +153,41 @@ export default function StockChart({ symbol, isPositive }: StockChartProps) {
   }
 
   return (
-    <div className="mt-4 mb-4">
-      {/* 기간 선택 탭 */}
-      <div className="flex gap-2 mb-3">
+    <div className="mb-4">
+      {/* 기간 선택 탭 - Terminal style */}
+      <div className="flex gap-2 mb-4">
         {(Object.keys(periodLabels) as ChartPeriod[]).map((period) => {
           const isLoaded = loadedPeriods.has(period)
           const isSelected = selectedPeriod === period
-          
+
           return (
             <button
               key={period}
               onClick={() => handlePeriodChange(period)}
               className={`
-                px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200
-                ${isSelected 
-                  ? `${isPositive ? 'bg-stock-up/20 text-stock-up border border-stock-up/30' : 'bg-stock-down/20 text-stock-down border border-stock-down/30'}` 
-                  : `${bgSecondary} ${textSecondary} hover:${isDark ? 'text-white' : 'text-light-text'} border border-transparent hover:${borderColor}`
+                px-4 py-2 font-terminal text-xs font-bold uppercase tracking-wider
+                border-2 transition-all duration-200
+                ${isSelected
+                  ? isDark
+                    ? 'bg-stock-up text-black border-stock-up'
+                    : 'bg-black text-white border-black'
+                  : isDark
+                    ? 'bg-black text-stock-up border-stock-up/30 hover:border-stock-up'
+                    : 'bg-white text-black border-black/30 hover:border-black'
                 }
               `}
             >
               {periodLabels[period]}
-              {!isLoaded && !isSelected && (
-                <span className="ml-1 text-[10px] opacity-50">•</span>
-              )}
             </button>
           )
         })}
       </div>
-      
-      {/* 차트 영역 */}
-      <div className={`${bgSecondary} rounded-lg p-3 border ${borderColor} transition-colors duration-300`}>
+
+      {/* 차트 영역 - Terminal container */}
+      <div className={`
+        ${bgSecondary} p-4 border-2 ${borderColor} scanline
+        ${isDark ? 'shadow-[8px_8px_0_rgba(0,210,106,0.2)]' : 'shadow-[8px_8px_0_rgba(0,0,0,0.1)]'}
+      `}>
         {/* 가격 라인 차트 */}
         <div className="h-32">
           <ResponsiveContainer width="100%" height="100%">
@@ -260,17 +268,22 @@ export default function StockChart({ symbol, isPositive }: StockChartProps) {
         </div>
       </div>
       
-      {/* 차트 해설 (규칙 기반) */}
+      {/* 차트 해설 (규칙 기반) - Terminal style */}
       <div className={`
-        mt-3 p-3 rounded-lg border
-        ${isPositive 
-          ? 'bg-stock-up/5 border-stock-up/20' 
-          : 'bg-stock-down/5 border-stock-down/20'
+        mt-4 p-4 border-l-4 font-terminal
+        ${isPositive
+          ? isDark ? 'bg-stock-up/10 border-stock-up' : 'bg-stock-up/5 border-stock-up'
+          : isDark ? 'bg-stock-down/10 border-stock-down' : 'bg-stock-down/5 border-stock-down'
         }
       `}>
-        <div className="flex items-start gap-2">
-          <span className="text-sm">📊</span>
-          <p className={`text-sm ${textNormal}`}>{insight}</p>
+        <div className="flex items-start gap-3">
+          <span className="text-base">📊</span>
+          <div>
+            <p className={`text-xs uppercase font-bold mb-1 ${textSecondary}`}>
+              Analysis
+            </p>
+            <p className={`text-sm ${textNormal}`}>{insight}</p>
+          </div>
         </div>
       </div>
     </div>

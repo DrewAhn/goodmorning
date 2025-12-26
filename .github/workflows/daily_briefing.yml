@@ -45,7 +45,9 @@ jobs:
           EXA_API_KEY: ${{ secrets.EXA_API_KEY }}
           PYTHONPATH: ${{ github.workspace }}/goodmorning/backend
 
-      - name: Send email briefing
+      - name: Send email briefing (Optional)
+        if: ${{ secrets.EMAIL_HOST != '' && secrets.EMAIL_USER != '' }}
+        continue-on-error: true
         run: |
           python -m services.email_service
         working-directory: ./goodmorning/backend
@@ -59,7 +61,7 @@ jobs:
           PYTHONPATH: ${{ github.workspace }}/goodmorning/backend
 
       - name: Upload briefing artifacts
-        if: success()
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: daily-briefing-${{ github.run_number }}

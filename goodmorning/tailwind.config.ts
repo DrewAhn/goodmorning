@@ -10,40 +10,53 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // 주식 컬러
-        'stock-up': '#00D26A',      // 상승 (녹색)
-        'stock-down': '#FF4757',    // 하락 (빨간색)
-        'stock-neutral': '#A0AEC0', // 보합 (회색)
-        // 다크 테마 컬러
+        // 주식 컬러 (Apple 스타일)
+        'stock-up': '#34C759',      // Apple Success Green
+        'stock-down': '#FF3B30',    // Apple Error Red
+        'stock-neutral': '#8E8E93', // Apple Gray
+        // Apple 브랜드 컬러
+        'apple-blue': '#0071E3',
+        'deep-black': '#1D1D1F',
+        'space-gray': '#86868B',
+        // 다크 테마 컬러 (Apple 스타일)
         'dark': {
-          'bg': '#0D1117',
-          'card': '#161B22',
-          'border': '#30363D',
-          'text': '#C9D1D9',
-          'text-secondary': '#8B949E',
-          'accent': '#58A6FF',
+          'bg': '#000000',          // Pure black
+          'card': '#1C1C1E',        // Apple dark card
+          'border': '#38383A',      // Subtle border
+          'text': '#FFFFFF',        // Pure white text
+          'text-secondary': '#86868B', // Space gray
+          'accent': '#0A84FF',      // Apple blue (dark mode)
         },
-        // 라이트 테마 컬러
+        // 라이트 테마 컬러 (Apple 스타일)
         'light': {
-          'bg': '#FFFFFF',
-          'card': '#F6F8FA',
-          'border': '#D0D7DE',
-          'text': '#1F2328',
-          'text-secondary': '#656D76',
-          'accent': '#0969DA',
+          'bg': '#FFFFFF',          // Pure white
+          'card': '#F5F5F7',        // Apple light gray
+          'border': '#D2D2D7',      // Light border
+          'text': '#1D1D1F',        // Deep black
+          'text-secondary': '#86868B', // Space gray
+          'accent': '#0071E3',      // Apple blue (light mode)
         }
       },
       fontFamily: {
-        'display': ['Archivo Black', 'Oswald', 'Pretendard', 'sans-serif'],
-        'terminal': ['IBM Plex Mono', 'monospace'],
-        'mono': ['IBM Plex Mono', 'monospace'],
+        // Apple 시스템 폰트 (Pretendard는 한글 fallback)
+        'sans': ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'SF Pro Text', 'Pretendard', 'system-ui', 'sans-serif'],
+      },
+      borderRadius: {
+        'apple-card': '18px',
+        'apple-button': '980px',    // Pill shape
+        'apple-input': '12px',
+      },
+      boxShadow: {
+        'apple-sm': '0 2px 8px rgba(0, 0, 0, 0.04)',
+        'apple-md': '0 4px 16px rgba(0, 0, 0, 0.08)',
+        'apple-lg': '0 8px 24px rgba(0, 0, 0, 0.12)',
+        'apple-xl': '0 16px 48px rgba(0, 0, 0, 0.16)',
       },
       animation: {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'fade-in': 'fadeIn 0.5s ease-out',
-        'slide-up': 'slideUp 0.3s ease-out',
+        'fade-in': 'fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+        'slide-up': 'slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         'ticker': 'ticker 30s linear infinite',
-        'glow': 'glow 2s ease-in-out infinite alternate',
       },
       keyframes: {
         fadeIn: {
@@ -57,10 +70,6 @@ const config: Config = {
         ticker: {
           '0%': { transform: 'translateX(0)' },
           '100%': { transform: 'translateX(-50%)' },
-        },
-        glow: {
-          '0%': { boxShadow: '0 0 5px currentColor, 0 0 10px currentColor' },
-          '100%': { boxShadow: '0 0 10px currentColor, 0 0 20px currentColor' },
         },
       },
     },

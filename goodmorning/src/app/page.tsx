@@ -32,7 +32,7 @@ export default function Dashboard() {
       setError(null)
       const apiStocks = await getTrendingStocks()
       const convertedStocks = apiStocks.map(convertApiToMockFormat)
-      setStocks(convertedStocks)
+      setStocks(convertedStocks as Stock[])
     } catch (err) {
       console.error('화제 종목 로드 실패:', err)
       setError(err instanceof Error ? err.message : '데이터를 불러오는데 실패했습니다.')

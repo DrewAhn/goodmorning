@@ -3,14 +3,14 @@
 @tailwind utilities;
 
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
-@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;600;700&family=Oswald:wght@600;700&display=swap');
 
 :root {
-  --stock-up: #00D26A;
-  --stock-down: #FF4757;
-  --stock-neutral: #A0AEC0;
-  --accent-gold: #FFA500;
-  --accent-cyan: #00D9FF;
+  --stock-up: #34C759;
+  --stock-down: #FF3B30;
+  --stock-neutral: #8E8E93;
+  --apple-blue: #0071E3;
+  --deep-black: #1D1D1F;
+  --space-gray: #86868B;
 }
 
 /* 테마 전환 애니메이션 */
@@ -23,86 +23,75 @@ html * {
 }
 
 body {
-  font-family: 'Pretendard', system-ui, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Pretendard', system-ui, sans-serif;
   position: relative;
 }
 
-/* 다크 모드 (기본) */
+/* 다크 모드 - Clean Apple style */
 html.dark body {
   background-color: #000000;
-  color: #E5E5E5;
-  background-image:
-    linear-gradient(rgba(0, 210, 106, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 210, 106, 0.03) 1px, transparent 1px);
-  background-size: 50px 50px;
-  background-position: 0 0, 0 0;
+  color: #FFFFFF;
 }
 
-/* 라이트 모드 */
+/* 라이트 모드 - Clean Apple style */
 html.light body {
   background-color: #FFFFFF;
-  color: #000000;
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
-  background-size: 50px 50px;
-  background-position: 0 0, 0 0;
+  color: #1D1D1F;
 }
 
-/* 스크롤바 스타일링 - 다크 모드 */
+/* Apple 스타일 스크롤바 - 다크 모드 */
 html.dark ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
 }
 
 html.dark ::-webkit-scrollbar-track {
-  background: #000000;
-  border-left: 1px solid #00D26A;
+  background: transparent;
 }
 
 html.dark ::-webkit-scrollbar-thumb {
-  background: #00D26A;
-  border-radius: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
 }
 
 html.dark ::-webkit-scrollbar-thumb:hover {
-  background: #00FF7F;
+  background: rgba(255, 255, 255, 0.5);
 }
 
-/* 스크롤바 스타일링 - 라이트 모드 */
+/* Apple 스타일 스크롤바 - 라이트 모드 */
 html.light ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
 }
 
 html.light ::-webkit-scrollbar-track {
-  background: #FFFFFF;
-  border-left: 1px solid #000000;
+  background: transparent;
 }
 
 html.light ::-webkit-scrollbar-thumb {
-  background: #000000;
-  border-radius: 0;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
 }
 
 html.light ::-webkit-scrollbar-thumb:hover {
-  background: #333333;
+  background: rgba(0, 0, 0, 0.3);
 }
 
-/* 카드 호버 효과 - Neo-Brutalist */
+/* Apple 스타일 카드 호버 - 미묘한 lift */
 .card-hover {
-  @apply transition-all duration-200;
-  position: relative;
+  @apply transition-all duration-300 ease-out;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
 }
 
 html.dark .card-hover:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 4px 4px 0 #00D26A;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
 html.light .card-hover:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 4px 4px 0 #000000;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 /* 주식 변동 색상 */
@@ -118,50 +107,35 @@ html.light .card-hover:hover {
   @apply text-stock-neutral;
 }
 
-/* 글로우 효과 - Neon */
-.glow-green {
-  box-shadow: 0 0 20px rgba(0, 210, 106, 0.6), 0 0 40px rgba(0, 210, 106, 0.3);
-  text-shadow: 0 0 10px rgba(0, 210, 106, 0.8);
-}
-
-.glow-red {
-  box-shadow: 0 0 20px rgba(255, 71, 87, 0.6), 0 0 40px rgba(255, 71, 87, 0.3);
-  text-shadow: 0 0 10px rgba(255, 71, 87, 0.8);
-}
-
-.glow-gold {
-  box-shadow: 0 0 20px rgba(255, 165, 0, 0.6), 0 0 40px rgba(255, 165, 0, 0.3);
-  text-shadow: 0 0 10px rgba(255, 165, 0, 0.8);
-}
-
-/* 버튼 스타일 - Brutalist */
+/* Apple 스타일 버튼 */
 .btn-primary {
-  @apply px-6 py-3 font-bold uppercase tracking-wider transition-all duration-200;
-  font-family: 'Oswald', sans-serif;
-  border: 2px solid #00D26A;
-  background: #00D26A;
-  color: #000000;
-  position: relative;
+  @apply px-6 py-3 font-semibold tracking-normal transition-all duration-300;
+  border-radius: 980px; /* Pill shape */
+  background: var(--apple-blue);
+  color: white;
 }
 
 .btn-primary:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 4px 4px 0 rgba(0, 210, 106, 0.5);
+  transform: scale(1.02);
+  opacity: 0.9;
 }
 
 .btn-secondary {
-  @apply px-6 py-3 font-bold uppercase tracking-wider transition-all duration-200;
-  font-family: 'Oswald', sans-serif;
-  border: 2px solid currentColor;
+  @apply px-6 py-3 font-semibold tracking-normal transition-all duration-300;
+  border-radius: 980px;
   background: transparent;
-  position: relative;
+  border: 1px solid currentColor;
 }
 
 .btn-secondary:hover {
-  transform: translate(-2px, -2px);
+  background: rgba(0, 0, 0, 0.05);
 }
 
-/* Ticker Animation */
+html.dark .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Ticker Animation - 유지 */
 @keyframes ticker {
   0% {
     transform: translateX(0);
@@ -179,29 +153,7 @@ html.light .card-hover:hover {
   animation-play-state: paused;
 }
 
-/* Scanline Effect */
-.scanline {
-  position: relative;
-}
-
-.scanline::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    to bottom,
-    transparent 50%,
-    rgba(0, 210, 106, 0.02) 50%
-  );
-  background-size: 100% 4px;
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* Number counter animation */
+/* Number counter animation - 유지 */
 @keyframes countUp {
   from {
     opacity: 0;
@@ -214,49 +166,10 @@ html.light .card-hover:hover {
 }
 
 .animate-count-up {
-  animation: countUp 0.6s ease-out;
+  animation: countUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Diagonal accent bar */
-.diagonal-accent {
-  position: relative;
-}
-
-.diagonal-accent::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 4px;
-  height: 100%;
-  background: linear-gradient(135deg, #00D26A, #FFA500);
-  transform: skewX(-10deg);
-}
-
-/* Brutalist border */
-.brutalist-border {
-  border: 3px solid currentColor;
-  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.1);
-}
-
-html.dark .brutalist-border {
-  box-shadow: 8px 8px 0 rgba(0, 210, 106, 0.2);
-}
-
-/* Terminal font */
-.font-terminal {
-  font-family: 'IBM Plex Mono', monospace;
-  letter-spacing: -0.5px;
-}
-
-/* Display font */
-.font-display {
-  font-family: 'Archivo Black', sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-/* Stagger animation */
+/* Stagger animation - 유지 */
 @keyframes staggerFadeIn {
   from {
     opacity: 0;
@@ -269,7 +182,7 @@ html.dark .brutalist-border {
 }
 
 .stagger-item {
-  animation: staggerFadeIn 0.5s ease-out forwards;
+  animation: staggerFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   opacity: 0;
 }
 
@@ -278,5 +191,3 @@ html.dark .brutalist-border {
 .stagger-item:nth-child(3) { animation-delay: 0.3s; }
 .stagger-item:nth-child(4) { animation-delay: 0.4s; }
 .stagger-item:nth-child(5) { animation-delay: 0.5s; }
-
-

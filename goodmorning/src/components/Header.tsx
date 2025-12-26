@@ -37,11 +37,12 @@ export default function Header() {
 
   return (
     <>
-      {/* Live Ticker */}
+      {/* Live Ticker - Apple Style */}
       <div className={`
-        overflow-hidden border-b-2 ${isDark ? 'border-stock-up bg-black' : 'border-black bg-white'}
+        overflow-hidden border-b backdrop-blur-lg
+        ${isDark ? 'border-dark-border bg-black/50' : 'border-light-border bg-white/50'}
       `}>
-        <div className="flex whitespace-nowrap ticker-animation font-terminal text-sm py-2">
+        <div className="flex whitespace-nowrap ticker-animation text-[13px] py-2 font-medium">
           {/* 티커를 두 번 반복하여 끊김 없는 애니메이션 */}
           {[...tickerItems, ...tickerItems].map((item, i) => {
             const isPositive = item.includes('+')
@@ -50,49 +51,41 @@ export default function Header() {
               <span
                 key={i}
                 className={`
-                  inline-flex items-center px-6 font-bold
-                  ${isPositive ? 'text-stock-up' : isNegative ? 'text-stock-down' : isDark ? 'text-white' : 'text-black'}
+                  inline-flex items-center px-6
+                  ${isPositive ? 'text-stock-up' : isNegative ? 'text-stock-down' : 'text-space-gray'}
                 `}
               >
                 {isPositive && '▲ '}
                 {isNegative && '▼ '}
                 {item}
-                <span className={`mx-2 ${isDark ? 'text-stock-up' : 'text-black'}`}>•</span>
+                <span className="mx-2 text-space-gray">•</span>
               </span>
             )
           })}
         </div>
       </div>
 
-      {/* Main Header */}
+      {/* Main Header - Frosted Glass Effect */}
       <header className={`
-        border-b-4 sticky top-0 z-50 transition-colors duration-300 backdrop-blur-md
+        border-b sticky top-0 z-50 transition-all duration-300 backdrop-blur-xl shadow-apple-sm
         ${isDark
-          ? 'border-stock-up bg-black/95'
-          : 'border-black bg-white/95'
+          ? 'border-dark-border bg-black/80'
+          : 'border-light-border bg-white/80'
         }
       `}>
-        <div className="max-w-7xl mx-auto px-4 py-4">
+        <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             {/* 로고 */}
-            <div className="flex items-center gap-4">
-              <div className={`
-                w-12 h-12 flex items-center justify-center font-display text-2xl
-                border-3 ${isDark ? 'border-stock-up bg-stock-up/10' : 'border-black bg-black/5'}
-              `}>
-                📈
-              </div>
+            <div className="flex items-center gap-3">
+              <span className="text-4xl">📈</span>
               <div>
                 <h1 className={`
-                  text-2xl font-display tracking-tight
-                  ${isDark ? 'text-stock-up' : 'text-black'}
+                  text-2xl font-semibold tracking-tight
+                  ${isDark ? 'text-white' : 'text-deep-black'}
                 `}>
                   굿모닝 월가
                 </h1>
-                <p className={`
-                  text-xs font-terminal uppercase tracking-wider
-                  ${isDark ? 'text-white/60' : 'text-black/60'}
-                `}>
+                <p className="text-sm text-space-gray">
                   Good Morning, Wall Street
                 </p>
               </div>
@@ -100,24 +93,21 @@ export default function Header() {
 
             {/* 우측 정보 */}
             <div className="flex items-center gap-4">
-              {/* 실시간 상태 */}
+              {/* LIVE 상태 - Pill shape */}
               <div className={`
-                hidden md:flex items-center gap-2 px-3 py-1.5
-                border-2 ${isDark ? 'border-stock-up' : 'border-black'}
+                hidden md:flex items-center gap-2 px-3 py-1.5 rounded-apple-button
+                ${isDark ? 'bg-white/10' : 'bg-black/10'}
               `}>
-                <div className={`w-2 h-2 ${isDark ? 'bg-stock-up' : 'bg-black'} animate-pulse`}></div>
-                <span className={`text-xs font-terminal font-bold ${isDark ? 'text-stock-up' : 'text-black'}`}>
+                <div className={`w-2 h-2 rounded-full ${isDark ? 'bg-stock-up' : 'bg-apple-blue'} animate-pulse`}></div>
+                <span className={`text-xs font-medium ${isDark ? 'text-white' : 'text-deep-black'}`}>
                   LIVE
                 </span>
               </div>
 
               {/* 업데이트 시간 */}
               {currentTime && (
-                <span className={`
-                  text-xs font-terminal hidden lg:block
-                  ${isDark ? 'text-white/60' : 'text-black/60'}
-                `}>
-                  LAST UPDATE: {currentTime} KST
+                <span className="text-[13px] hidden lg:block text-space-gray">
+                  Last update: {currentTime} KST
                 </span>
               )}
 

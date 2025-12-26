@@ -22,32 +22,32 @@ export default function BriefingHistoryCard({ briefing }: BriefingHistoryCardPro
   return (
     <Link href={`/briefing/${briefing.id}`}>
       <div className={`
-        card-hover cursor-pointer border-2 overflow-hidden
-        ${isDark ? 'bg-black border-stock-up' : 'bg-white border-black'}
+        card-hover cursor-pointer rounded-apple-card overflow-hidden shadow-apple-sm transition-all duration-300
+        ${isDark ? 'bg-dark-card' : 'bg-light-card'}
       `}>
         {/* 상단 스트라이프 */}
         <div className={`
-          h-1.5
+          h-1
           ${isPositive ? 'bg-stock-up' : 'bg-stock-down'}
         `}></div>
 
-        <div className="p-4">
+        <div className="p-5">
           {/* 헤더 */}
           <div className="flex items-center justify-between mb-3">
             <span className={`
-              text-xs font-terminal uppercase font-bold
-              ${isDark ? 'text-stock-up' : 'text-black'}
+              text-[13px] font-medium
+              ${isDark ? 'text-white' : 'text-deep-black'}
             `}>
               {formatDate(briefing.marketDate)}
             </span>
             <span className={`
-              px-2 py-0.5 font-terminal text-[10px] font-bold border
+              px-3 py-1 text-[11px] font-medium rounded-apple-button
               ${briefing.status === 'completed'
-                ? isDark ? 'border-stock-up text-stock-up' : 'border-black text-black'
-                : 'border-yellow-500 text-yellow-500'
+                ? isDark ? 'bg-stock-up/20 text-stock-up' : 'bg-black/10 text-deep-black'
+                : 'bg-yellow-500/20 text-yellow-600'
               }
             `}>
-              {briefing.status === 'completed' ? 'SENT' : 'PENDING'}
+              {briefing.status === 'completed' ? 'Sent' : 'Pending'}
             </span>
           </div>
 
@@ -55,21 +55,18 @@ export default function BriefingHistoryCard({ briefing }: BriefingHistoryCardPro
           <div className="flex items-center justify-between mb-4">
             <div>
               <p className={`
-                text-lg font-display
-                ${isDark ? 'text-white' : 'text-black'}
+                text-lg font-semibold tracking-tight
+                ${isDark ? 'text-white' : 'text-deep-black'}
               `}>
                 {briefing.topStock.symbol}
               </p>
-              <p className={`
-                text-xs font-terminal
-                ${isDark ? 'text-white/60' : 'text-black/60'}
-              `}>
+              <p className="text-[13px] text-space-gray">
                 {briefing.topStock.name}
               </p>
             </div>
             <div className="text-right">
               <p className={`
-                text-xl font-terminal font-bold
+                text-xl font-semibold tabular-nums
                 ${isPositive ? 'text-stock-up' : 'text-stock-down'}
               `}>
                 {isPositive ? '+' : ''}{briefing.topStock.changePercent.toFixed(2)}%
@@ -79,47 +76,38 @@ export default function BriefingHistoryCard({ briefing }: BriefingHistoryCardPro
 
           {/* 통계 */}
           <div className={`
-            pt-3 border-t grid grid-cols-3 gap-2 text-center font-terminal
+            pt-3 border-t grid grid-cols-3 gap-2 text-center
             ${isDark ? 'border-white/10' : 'border-black/10'}
           `}>
             <div>
-              <p className={`
-                text-xs
-                ${isDark ? 'text-white/60' : 'text-black/60'}
-              `}>
-                SENT
+              <p className="text-[12px] text-space-gray mb-1">
+                Sent
               </p>
               <p className={`
-                text-sm font-bold
-                ${isDark ? 'text-white' : 'text-black'}
+                text-[15px] font-semibold tabular-nums
+                ${isDark ? 'text-white' : 'text-deep-black'}
               `}>
                 {briefing.deliverySummary.emailSent}
               </p>
             </div>
             <div>
-              <p className={`
-                text-xs
-                ${isDark ? 'text-white/60' : 'text-black/60'}
-              `}>
-                OPEN
+              <p className="text-[12px] text-space-gray mb-1">
+                Open
               </p>
               <p className={`
-                text-sm font-bold
-                ${isDark ? 'text-white' : 'text-black'}
+                text-[15px] font-semibold tabular-nums
+                ${isDark ? 'text-white' : 'text-deep-black'}
               `}>
                 {openRate}%
               </p>
             </div>
             <div>
-              <p className={`
-                text-xs
-                ${isDark ? 'text-white/60' : 'text-black/60'}
-              `}>
-                SLACK
+              <p className="text-[12px] text-space-gray mb-1">
+                Slack
               </p>
               <p className={`
-                text-sm font-bold
-                ${isDark ? 'text-white' : 'text-black'}
+                text-[15px] font-semibold tabular-nums
+                ${isDark ? 'text-white' : 'text-deep-black'}
               `}>
                 {briefing.deliverySummary.slackSent}
               </p>

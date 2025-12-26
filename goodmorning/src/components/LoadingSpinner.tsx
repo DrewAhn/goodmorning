@@ -15,14 +15,16 @@ export default function LoadingSpinner({ message = '데이터를 불러오는 �
   const cardBg = isDark ? 'bg-dark-card' : 'bg-light-card'
   const borderColor = isDark ? 'border-dark-border' : 'border-light-border'
 
+  const accentColor = isDark ? 'border-dark-accent' : 'border-light-accent'
+
   return (
-    <div className={`${cardBg} border ${borderColor} rounded-xl p-12 flex flex-col items-center justify-center transition-colors duration-300`}>
+    <div className={`${cardBg} rounded-apple-card shadow-apple-md p-12 flex flex-col items-center justify-center transition-all duration-300`}>
       <div className="relative w-16 h-16 mb-4">
-        <div className="absolute inset-0 border-4 border-dark-accent/20 rounded-full"></div>
-        <div className="absolute inset-0 border-4 border-dark-accent border-t-transparent rounded-full animate-spin"></div>
+        <div className={`absolute inset-0 border-4 ${accentColor}/20 rounded-full`}></div>
+        <div className={`absolute inset-0 border-4 ${accentColor} border-t-transparent rounded-full animate-spin`}></div>
       </div>
-      <p className={`${textPrimary} font-semibold mb-1`}>{message}</p>
-      <p className={`${textSecondary} text-sm`}>잠시만 기다려주세요...</p>
+      <p className={`${textPrimary} font-semibold text-[17px] leading-[1.47] mb-1`}>{message}</p>
+      <p className={`${textSecondary} text-[14px] leading-[1.42]`}>잠시만 기다려주세요...</p>
     </div>
   )
 }

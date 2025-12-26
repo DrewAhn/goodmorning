@@ -45,20 +45,20 @@ jobs:
           EXA_API_KEY: ${{ secrets.EXA_API_KEY }}
           PYTHONPATH: ${{ github.workspace }}/goodmorning/backend
 
-      - name: Send email briefing (Optional)
-        if: ${{ secrets.EMAIL_HOST != '' && secrets.EMAIL_USER != '' }}
-        continue-on-error: true
-        run: |
-          python -m services.email_service
-        working-directory: ./goodmorning/backend
-        env:
-          EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
-          EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
-          EMAIL_USER: ${{ secrets.EMAIL_USER }}
-          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
-          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
-          EMAIL_TO: ${{ secrets.EMAIL_TO }}
-          PYTHONPATH: ${{ github.workspace }}/goodmorning/backend
+      # 이메일 발송 단계는 주석 처리됨 (필요시 아래 주석 해제)
+      # - name: Send email briefing
+      #   continue-on-error: true
+      #   run: |
+      #     python -m services.email_service
+      #   working-directory: ./goodmorning/backend
+      #   env:
+      #     EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
+      #     EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
+      #     EMAIL_USER: ${{ secrets.EMAIL_USER }}
+      #     EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+      #     EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+      #     EMAIL_TO: ${{ secrets.EMAIL_TO }}
+      #     PYTHONPATH: ${{ github.workspace }}/goodmorning/backend
 
       - name: Upload briefing artifacts
         if: always()

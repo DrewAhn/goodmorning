@@ -1,0 +1,75 @@
+name: Daily Stock Briefing
+
+on:
+  # 매일 한국시간 오전 7시 (UTC 22:00) 실행
+  schedule:
+    - cron: '0 22 * * *'
+
+  # 수동 실행 가능
+  workflow_dispatch:
+
+jobs:
+  generate-briefing:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+        working-directory: ./goodmorning/backend
+
+      - name: Run stock screener
+        run: |
+          python -m services.screener_service
+        working-directory: ./goodmorning/backend
+        env:
+          # Yahoo Finance API는 별도 인증 불필요
+          PYTHONPATH: ${{ github.workspace }}/goodmorning/backend
+
+      - name: Generate briefing
+        run: |
+          python -m services.briefing_service
+        working-directory: ./goodmorning/backend
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          EXA_API_KEY: ${{ secrets.EXA_API_KEY }}
+          PYTHONPATH: ${{ github.workspace }}/goodmorning/backend
+
+      - name: Send email briefing
+        run: |
+          python -m services.email_service
+        working-directory: ./goodmorning/backend
+        env:
+          EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
+          EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
+          EMAIL_USER: ${{ secrets.EMAIL_USER }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+          PYTHONPATH: ${{ github.workspace }}/goodmorning/backend
+
+      - name: Upload briefing artifacts
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-briefing-${{ github.run_number }}
+          path: |
+            goodmorning/backend/output/*.json
+            goodmorning/backend/output/*.html
+          retention-days: 30
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "::error::Daily briefing generation failed"
+          # 선택사항: Slack 알림, Discord 알림 등 추가 가능
